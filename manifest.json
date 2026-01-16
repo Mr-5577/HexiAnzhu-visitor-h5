@@ -1,0 +1,176 @@
+{
+	"name": "和喜·慧生活",
+	"appid": "__UNI__B30B310",
+	"description": "智慧美好生活从这里开启",
+	"versionName": "1.4.2",
+	"versionCode": 142,
+	"transformPx": false,
+	/* 5+App特有相关 */
+	"app-plus": {
+		"usingComponents": true,
+		/* 模块配置 */
+		"modules": {
+			"Push": {},
+			"Maps": {},
+			"Share": {},
+			"Contacts": {},
+			"OAuth": {},
+			"Payment": {}
+		},
+		/* 应用发布信息 */
+		"distribute": {
+			/* android打包配置 */
+			"android": {
+				"permissions": [
+					"<uses-feature android:name=\"android.hardware.camera\"/>",
+					"<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+					"<uses-permission android:name=\"android.permission.CAMERA\"/>",
+					"<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+					"<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+					"<uses-permission android:name=\"android.permission.INTERNET\"/>",
+					"<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+					"<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+					"<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+					"<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+					"<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+					"<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+					"<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+					"<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+					"<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+					"<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+				]
+			},
+			/* ios打包配置 */
+			"ios": {
+				"privacyDescription": {
+					"NSPhotoLibraryUsageDescription": "获取相册权限用于用户使用报事报修的时候上传图片",
+					"NSPhotoLibraryAddUsageDescription": "获取拍照权限用于用户使用报事报修的时候上传图片",
+					"NSCameraUsageDescription": "获取摄像头权限用于用户使用报事报修的时候上传图片",
+					"NSMicrophoneUsageDescription": "获取麦克风权限用于使用报修功能时候用户录音上传",
+					"NSLocationWhenInUseUsageDescription": "运行期间访问位置权限用于用户定位位置",
+					"NSLocationAlwaysUsageDescription": "后台运行访问位置权限用于用户定位位置",
+					"NSLocationAlwaysAndWhenInUseUsageDescription": "访问位置权限用于用户定位位置来定位用户在哪个小区",
+					"NSContactsUsageDescription": "通讯录权限用于用户拨打电话给物业联系人",
+					"NSAppleMusicUsageDescription": "媒体资料库权限用于用户使用报修功能时获取照片上传"
+				},
+				"capabilities": {
+					"entitlements": {
+						"com.apple.developer.associated-domains": ["applinks:api.yangguangzhiye.cn"]
+					}
+				},
+				"idfa": false
+			},
+			/* SDK配置 */
+			"sdkConfigs": {
+				"payment": {
+					"weixin": {
+						"appid": "wx208724eedb83ffb4",
+						"UniversalLinks": "https://api.yangguangzhiye.cn/ulink/"
+					},
+					"alipay": {}
+				},
+				"oauth": {
+					"weixin": {
+						"appid": "wx208724eedb83ffb4",
+						"appsecret": "c791feb71d3f2a95a18f0c7369bb4d31",
+						"UniversalLinks": "https://api.yangguangzhiye.cn/ulink/"
+					}
+				},
+				"push": {
+					"unipush": {}
+				},
+				"statics": {},
+				"ad": {}
+			},
+			"icons": {
+				"android": {
+					"hdpi": "unpackage/res/icons/72x72.png",
+					"xhdpi": "unpackage/res/icons/96x96.png",
+					"xxhdpi": "unpackage/res/icons/144x144.png",
+					"xxxhdpi": "unpackage/res/icons/192x192.png"
+				},
+				"ios": {
+					"appstore": "unpackage/res/icons/1024x1024.png",
+					"ipad": {
+						"app": "unpackage/res/icons/76x76.png",
+						"app@2x": "unpackage/res/icons/152x152.png",
+						"notification": "unpackage/res/icons/20x20.png",
+						"notification@2x": "unpackage/res/icons/40x40.png",
+						"proapp@2x": "unpackage/res/icons/167x167.png",
+						"settings": "unpackage/res/icons/29x29.png",
+						"settings@2x": "unpackage/res/icons/58x58.png",
+						"spotlight": "unpackage/res/icons/40x40.png",
+						"spotlight@2x": "unpackage/res/icons/80x80.png"
+					},
+					"iphone": {
+						"app@2x": "unpackage/res/icons/120x120.png",
+						"app@3x": "unpackage/res/icons/180x180.png",
+						"notification@2x": "unpackage/res/icons/40x40.png",
+						"notification@3x": "unpackage/res/icons/60x60.png",
+						"settings@2x": "unpackage/res/icons/58x58.png",
+						"settings@3x": "unpackage/res/icons/87x87.png",
+						"spotlight@2x": "unpackage/res/icons/80x80.png",
+						"spotlight@3x": "unpackage/res/icons/120x120.png"
+					}
+				}
+			},
+			"splashscreen": {
+				"ios": {
+					"iphone": {
+						"portrait-896h@3x": "G:/work/uni-app/est-app/APP图标/ios/1242x2688px.png",
+						"portrait-896h@2x": "G:/work/uni-app/est-app/APP图标/ios/828x1792px.png",
+						"iphonex": "G:/work/uni-app/est-app/APP图标/ios/1125x2436px.png",
+						"retina55": "G:/work/uni-app/est-app/APP图标/ios/1242x2208px.png",
+						"retina47": "G:/work/uni-app/est-app/APP图标/ios/750x1334px.png",
+						"retina40": "G:/work/uni-app/est-app/APP图标/ios/640x1336px.png",
+						"retina35": "G:/work/uni-app/est-app/APP图标/ios/640x960px.png"
+					}
+				},
+				"android": {
+					"hdpi": "G:/work/uni-app/est-app/APP图标/android/1080x1882px.9.png",
+					"xhdpi": "G:/work/uni-app/est-app/APP图标/android/1080x1882px.9.png",
+					"xxhdpi": "G:/work/uni-app/est-app/APP图标/android/1080x1882px.9.png"
+				}
+			}
+		},
+		"splashscreen": {
+			"waiting": false,
+			"alwaysShowBeforeRender": false
+		},
+		"compilerVersion": 2
+	},
+	/* 快应用特有相关 */
+	"quickapp": {},
+	/* 小程序特有相关 */
+	"mp-weixin": {
+		"appid": "wx04594b249448b4a9",
+		"setting": {
+			"urlCheck": true,
+			"minified": true,
+			"es6": false,
+			"enhance": true // 增强编译
+		},
+		"optimization": {
+			"subPackages": true // 启用分包优化
+		},
+		"lazyCodeLoading": "requiredComponents", // 按需注入
+		"usingComponents": true
+	},
+	"mp-alipay": {
+		"usingComponents": true
+	},
+	"mp-baidu": {
+		"usingComponents": true
+	},
+	"mp-toutiao": {
+		"usingComponents": true
+	}
+}

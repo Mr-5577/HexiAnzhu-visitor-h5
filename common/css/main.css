@@ -1,0 +1,296 @@
+.uni-cell-10 {
+	width: 10%;
+}
+
+.uni-cell-15 {
+	width: 15%;
+}
+
+.uni-cell-20 {
+	width: 20%;
+}
+
+.uni-cell-30 {
+	width: 30%;
+}
+
+.uni-cell-40 {
+	width: 40%;
+}
+
+.uni-cell-50 {
+	width: 50%;
+}
+
+.uni-cell-60 {
+	width: 60%;
+}
+
+.uni-cell-70 {
+	width: 70%;
+}
+
+.uni-cell-80 {
+	width: 80%;
+}
+
+.uni-cell-85 {
+	width: 85%;
+}
+
+.uni-cell-90 {
+	width: 90%;
+}
+
+.uni-cell-95 {
+	width: 95%;
+}
+
+.uni-cell-100 {
+	width: 100%;
+}
+
+.uni-ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.colorOrange {
+	background: #FFCA3E;
+}
+
+.colorRed {
+	background: #FF3333;
+}
+
+.colorPurple {
+	background: #C71585;
+}
+
+.colorBlue {
+	background: #6382c5;
+}
+
+.color89 {
+	color: #898989;
+}
+
+.color-font-orange {
+	color: #FFCA3E;
+}
+
+.color-font-gray {
+	color: #c9ccd3;
+}
+.color-font-blue {
+	color: #6382c5;
+}
+.uni-font-20 {
+	font-size: 20upx;
+}
+
+.uni-font-22 {
+	font-size: 22upx;
+}
+
+.uni-font-24 {
+	font-size: 24upx;
+}
+
+.uni-font-28 {
+	font-size: 28upx;
+}
+
+.uni-font-30 {
+	font-size: 30upx;
+}
+
+.uni-font-32 {
+	font-size: 32upx;
+}
+
+.uni-font-36 {
+	font-size: 36upx;
+}
+
+.uni-font-38 {
+	font-size: 38upx;
+}
+
+.uni-font-40 {
+	font-size: 40upx;
+}
+
+.uni-font-44 {
+	font-size: 44upx;
+}
+
+.uni-font-48 {
+	font-size: 48upx;
+}
+
+.uni-font-50 {
+	font-size: 50upx;
+}
+
+.uni-font-54 {
+	font-size: 54upx;
+}
+
+.uni-font-58 {
+	font-size: 58upx;
+}
+
+.uni-font-60 {
+	font-size: 60upx;
+}
+
+.uni-font-64 {
+	font-size: 64upx;
+}
+
+.uni-font-bold {
+	font-weight: bold;
+}
+
+.uni-font-bold-700 {
+	font-weight: 900;
+}
+
+.uni-text-center {
+	text-align: center;
+}
+
+.uni-text-right {
+	text-align: right;
+}
+
+.uni-flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.uni-flex-btw {
+	display: flex;
+	justify-content: space-between;
+}
+
+.uni-cell-lineheight-40 {
+	line-height: 40upx;
+}
+
+.uni-cell-lineheight-50 {
+	line-height: 50upx;
+}
+
+.uni-cell-lineheight-60 {
+	line-height: 60upx;
+}
+
+.uni-cell-lineheight-80 {
+	line-height: 80upx;
+}
+
+.uni-cell-lineheight-100 {
+	line-height: 100upx;
+}
+
+.uni-empty {
+	height: 120upx;
+	text-align: center;
+	line-height: 120upx;
+	color: #898989;
+	z-index: 999;
+}
+
+.uni-empty-img {
+	height: 300upx;
+}
+
+.uni-margin-top-20 {
+	margin-top: 20upx;
+}
+
+.uni-margin-top-40 {
+	margin-top: 40upx;
+}
+
+.uni-margin-top-80 {
+	margin-top: 80upx;
+}
+
+.uni-margin-top-100 {
+	margin-top: 100upx;
+}
+
+.uni-margin-top-120 {
+	margin-top: 120upx;
+}
+
+.bg-gradient-btn {
+	background: -webkit-linear-gradient(left, #ffb200, #fe8502);
+	/* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #ffb200, #fe8502);
+	/* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #ffb200, #fe8502);
+	/* Firefox 3.6 - 15 */
+	background: linear-gradient(to right, #ffb200, #fe8502);
+	/* 标准的语法（必须放在最后） */
+}
+
+.uni-common-content {
+	margin-bottom: 140upx;
+}
+
+.uni-common-foot-btn {
+	position: fixed;
+	bottom: 10upx;
+	height: 120upx;
+	width: 100%;
+}
+
+.uni-common-foot-btn button {
+	width: 90%;
+	height: 80upx;
+	line-height: 80upx;
+	border-radius: 40upx;
+	margin-bottom: 40upx;
+	margin-top: 40upx;
+	color: #ffffff
+}
+
+.uni-common-showImg {
+	width: 180upx;
+	height: 180upx;
+	border-radius: 10upx;
+	margin: 20upx;
+	display: inline-flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.uni-common-mark{
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	position: fixed;
+	top: 0;
+}
+.uni-common-mark-content{
+	width: 80%;
+	height: 800upx;
+	background: #FFFFFF;
+	z-index: 999;
+	border-radius: 10upx;
+}
+.uni-common-mark-close{
+	text-align: center;
+	font-size: 34upx;
+	border-radius: 50%;
+	border: 1upx solid #FFFFFF;
+	width: 60upx;
+	color: #FFFFFF;
+	margin-top: 40upx;
+}

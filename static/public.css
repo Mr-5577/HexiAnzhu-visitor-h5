@@ -1,0 +1,8 @@
+/* 图片上传样式 */
+.image-drag-sort {
+	padding: 20upx 0 40upx!important;
+}
+.img-upload-btn {
+	width: 120upx!important;
+	box-sizing: border-box;
+}
