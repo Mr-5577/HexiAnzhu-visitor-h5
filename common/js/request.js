@@ -67,17 +67,17 @@ const handleResponseError = (res) => {
     1006: () => showToast("短信发送失败"),
     1007: () => handleLoginExpired(),
     1008: () => {
-      uni.showModal({
-        title: "未绑定房产",
-        cancelColor: "#898989",
-        cancelText: "不去了",
-        confirmColor: "#fe845e",
-        confirmText: "去绑定",
-        content: "是否前往绑定房产？",
-        success: (resp) =>
-        //   resp.confirm &&
-        //   uni.navigateTo({ url: "/pages/reg/bound-house/bound-house" }),
-      });
+      // uni.showModal({
+      //   title: "未绑定房产",
+      //   cancelColor: "#898989",
+      //   cancelText: "不去了",
+      //   confirmColor: "#fe845e",
+      //   confirmText: "去绑定",
+      //   content: "是否前往绑定房产？",
+      //   success: (resp) =>
+      //     resp.confirm &&
+      //     uni.navigateTo({ url: "/pages/reg/bound-house/bound-house" }),
+      // });
     },
     1009: () => handleLoginExpired(),
     1010: () => showToast("身份不匹配"),
