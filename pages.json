@@ -1,9 +1,15 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页,
+	"pages": [
 		{
 			"path": "pages/visitor/visitor-register",
 			"style": {
 				"navigationBarTitleText": "来访登记"
+			}
+		},
+		{
+			"path": "pages/test/index",
+			"style": {
+				"navigationBarTitleText": "测试"
 			}
 		},
 		{

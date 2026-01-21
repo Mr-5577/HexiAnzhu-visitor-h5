@@ -5,6 +5,10 @@ Vue.use(Router)
 const router = new Router({
 	routes: [
 		{
+			name: "test",
+			path: "/pages/test/login"
+		},
+		{
 			name: "login",
 			path: "/pages/login/login"
 		},
