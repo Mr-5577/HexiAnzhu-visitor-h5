@@ -6,20 +6,8 @@
 			<view class="type-value">{{ visitorType === 'delivery' ? '外卖人员' : '普通访客' }}</view>
 		</view>
 
-		<!-- 到访信息展示 -->
-		<view class="register-info" v-if="hasHistory">
-			<view class="visit-date">
-				<text class="date-text">到访日期</text>
-				<text class="date-text">{{ currentTime }}</text>
-			</view>
-			<view class="visit-user">
-				<text class="user-text">访客姓名：{{ form.visitorName }}</text>
-				<text class="user-text">访客电话：{{ form.phone }}</text>
-			</view>
-		</view>
-
 		<!-- 到访信息表单 -->
-		<scroll-view class="form-container" scroll-y v-else>
+		<scroll-view class="form-container" scroll-y v-if="!hasHistory">
 			<!-- 访客信息 -->
 			<view class="form-section">
 				<!-- 访客姓名 -->
@@ -27,7 +15,7 @@
 					<view class="item-label">
 						<text class="required">*</text>访客姓名：
 					</view>
-					<input class="item-input" v-model="form.visitorName" placeholder="请输入来访人姓名" maxlength="20" />
+					<input class="item-input" v-model="formData.visitorName" placeholder="请输入来访人姓名" maxlength="20" />
 				</view>
 
 				<!-- 身份证 -->
@@ -35,8 +23,8 @@
 					<view class="item-label">
 						<text class="required">*</text>访客身份证：
 					</view>
-					<input class="item-input" v-model="form.idCard" placeholder="请输入来访人身份证" maxlength="18"
-						@blur="validateIdCard" />
+					<input class="item-input" v-model="formData.idCard" placeholder="请输入来访人身份证" maxlength="18"
+						type="idcard" @input="validateIdCard" />
 					<view v-if="idCardError" class="error-text">{{ idCardError }}</view>
 				</view>
 
@@ -45,8 +33,8 @@
 					<view class="item-label">
 						<text class="required">*</text>访客手机号：
 					</view>
-					<input class="item-input" v-model="form.phone" placeholder="请输入来访人手机号" type="number" maxlength="11"
-						@blur="validatePhone" />
+					<input class="item-input" v-model="formData.phone" placeholder="请输入来访人手机号" type="tel" maxlength="11"
+						@input="validatePhone" />
 					<view v-if="phoneError" class="error-text">{{ phoneError }}</view>
 				</view>
 			</view>
@@ -58,23 +46,42 @@
 					<view class="item-label">
 						<text class="required">*</text>业主小区：
 					</view>
-					<picker class="item-picker" @change="onCommunityChange" :range="communityList" range-key="name"
-						:value="communityIndex">
-						<view class="picker-content">
-							{{ form.communityName || '请选择小区' }}
+					<input class="item-input" v-model="formData.communityName" placeholder=" " type="text" disabled />
+				</view>
+
+				<!-- 楼栋，普通来访必填，外卖来访不显示 -->
+				<view class="form-item" v-if="visitorType === 'normal'">
+					<view class="item-label">
+						<text class="required">*</text>业主楼栋：
+					</view>
+					<picker class="item-picker" @change="buildingChange" :range="buildingList" range-key="name"
+						:value="buildingIndex" :disabled="!formData.communityId">
+						<view class="picker-content" :class="{ disabled: !formData.communityId }">
+							{{ formData.buildingName || '请选择楼栋' }}
 						</view>
 					</picker>
 				</view>
-
-				<!-- 业主房号，普通来访必填，外卖来访不显示 -->
+				<!-- 单元，普通来访必填，外卖来访不显示 -->
+				<view class="form-item" v-if="visitorType === 'normal'">
+					<view class="item-label">
+						<text class="required">*</text>业主单元：
+					</view>
+					<picker class="item-picker" @change="unitChange" :range="unitList" range-key="name"
+						:value="unitIndex" :disabled="!formData.buildingId">
+						<view class="picker-content" :class="{ disabled: !formData.buildingId }">
+							{{ formData.unitName || '请选择单元' }}
+						</view>
+					</picker>
+				</view>
+				<!-- 房号，普通来访必填，外卖来访不显示 -->
 				<view class="form-item" v-if="visitorType === 'normal'">
 					<view class="item-label">
 						<text class="required">*</text>业主房号：
 					</view>
-					<picker class="item-picker" @change="onRoomChange" :range="roomList" range-key="name"
-						:value="roomIndex" :disabled="!form.communityId">
-						<view class="picker-content" :class="{ disabled: !form.communityId }">
-							{{ form.roomNumber || '请选择房号' }}
+					<picker class="item-picker" @change="roomChange" :range="roomList" range-key="name"
+						:value="roomIndex" :disabled="!formData.unitId">
+						<view class="picker-content" :class="{ disabled: !formData.unitId }">
+							{{ formData.roomName || '请选择房号' }}
 						</view>
 					</picker>
 				</view>
@@ -84,8 +91,8 @@
 					<view class="item-label">
 						<text class="required">*</text>业主手机：
 					</view>
-					<input class="item-input" v-model="form.ownerPhone" placeholder="请填写业主手机号" type="number"
-						maxlength="11" @blur="validateOwnerPhone" />
+					<input class="item-input" v-model="formData.ownerPhone" placeholder="请填写业主手机号" type="tel"
+						maxlength="11" @input="validateOwnerPhone" />
 					<view v-if="ownerPhoneError" class="error-text">{{ ownerPhoneError }}</view>
 				</view>
 			</view>
@@ -99,11 +106,22 @@
 			</view>
 		</scroll-view>
 
+		<!-- 到访信息展示 -->
+		<view class="register-info" v-if="hasHistory">
+			<view class="visit-date">
+				<text class="date-text">到访日期</text>
+				<text class="date-text">{{ currentTime }}</text>
+			</view>
+			<view class="visit-user">
+				<text class="user-text">访客姓名：{{ formData.visitorName }}</text>
+				<text class="user-text">访客电话：{{ formData.phone }}</text>
+			</view>
+		</view>
 
 		<!-- 加载中提示 -->
 		<view v-if="loading" class="loading-mask">
 			<view class="loading-content">
-				<image src="/static/images/load.gif" mode="aspectFit"></image>
+				<image src="/static/images/load.gif" mode="aspectFit" style="width: 60px;height: 60px;"></image>
 				<text class="loading-text">加载中...</text>
 			</view>
 		</view>
@@ -118,14 +136,18 @@
 				visitorType: 'normal',
 
 				// 表单数据
-				form: {
+				formData: {
 					visitorName: '', // 访客姓名
 					idCard: '', // 访客身份证
 					phone: '', // 访客手机
 					communityId: '', // 小区ID
 					communityName: '', // 小区名称
+					buildingId: '', // 业主楼栋ID
+					buildingName: '', // 业主楼栋名称
+					unitId: '', // 业主单元ID
+					unitName: '', // 业主单元名称
 					roomId: '', // 业主房号ID
-					roomNumber: '', // 业主房号名称
+					roomName: '', // 业主房号名称
 					ownerPhone: '' // 业主手机
 				},
 
@@ -134,22 +156,14 @@
 				phoneError: '',
 				ownerPhoneError: '',
 
-				// 小区列表
-				communityList: [{
-						id: 1,
-						name: '小区A'
-					},
-					{
-						id: 2,
-						name: '小区B'
-					},
-					{
-						id: 3,
-						name: '小区C'
-					}
-				],
-				// 当前选中小区的索引
-				communityIndex: -1,
+				// 楼栋列表
+				buildingList: [],
+				// 当前选中楼栋索引
+				buildingIndex: -1,
+				// 单元列表
+				unitList: [],
+				// 当前选中单元索引
+				unitIndex: -1,
 				// 房间列表
 				roomList: [],
 				// 当前选中房间的索引
@@ -159,9 +173,10 @@
 				loading: false,
 				// 是否有历史记录
 				hasHistory: false,
+				// 当前时间
 				currentTime: '',
 				// 小区ID
-				villageId: ''
+				villageId: '1001',
 			};
 		},
 
@@ -172,14 +187,15 @@
 					visitorName,
 					idCard,
 					phone
-				} = this.form;
+				} = this.formData;
 				const baseValid = visitorName && idCard && phone && !this.idCardError && !this.phoneError;
 
 				if (this.visitorType === 'normal') {
 					return baseValid &&
-						this.form.communityId &&
-						this.form.roomId &&
-						this.form.ownerPhone &&
+						this.formData.communityId &&
+						this.formData.unitId &&
+						this.formData.roomId &&
+						this.formData.ownerPhone &&
 						!this.ownerPhoneError;
 				}
 
@@ -209,7 +225,6 @@
 			// 3. 没有历史记录，获取openId登录。然后加载小区列表在页面手动录入
 			if (!hasValidHistory) {
 				this.getOpenId();
-				// this.loadCommunityList();
 			}
 		},
 		// 页面卸载时（返回或跳转）触发
@@ -268,120 +283,164 @@
 				_this.$api.getUserOpenid({
 					code: codeRes[1].code
 				}, res => {
-					console.log('来访openId', res)
 					if (res.code === 1) {
-						// 请求小区列表数据
-						_this.loadCommunityList()
+						// 静默登录
+						_this.$api.login_by_openid_xcx({
+							cache_name: res.data
+						}, loginRes => {
+							console.log('loginRes', loginRes)
+							if (loginRes.code === 1) {
+								uni.setStorageSync('loginToken', loginRes.data);
+								_this.$store.commit('loginToken', loginRes.data);
+								// 请求小区数据
+								_this.loadCommunity()
+							}
+						})
 					}
 				})
 			},
 
-			// 检查历史记录
-			checkHistory() {
-				// 从本地存储获取访客历史记录
-				const history = uni.getStorageSync('visitorHistory');
-				// 无历史记录或记录无效
-				if (!history || !history.idCard) {
-					return false;
+			// 小区信息
+			async loadCommunity() {
+				if (!this.villageId) {
+					uni.showToast({
+						title: '未获取到小区ID',
+						icon: 'none'
+					});
+					return
 				}
-
-				// 有历史记录，自动填充访客信息
-				this.form.visitorName = history.visitorName || '';
-				this.form.idCard = history.idCard || '';
-				this.form.phone = history.phone || '';
-				this.setCurrTime();
-				this.hasHistory = true;
-
-				return true;
-			},
-
-			// 设置当前时间
-			setCurrTime() {
-				const now = new Date();
-				// 补零函数
-				const pad = (num) => num.toString().padStart(2, '0');
-				const year = now.getFullYear();
-				const month = pad(now.getMonth() + 1);
-				const day = pad(now.getDate());
-				const hours = pad(now.getHours());
-				const minutes = pad(now.getMinutes());
-				const seconds = pad(now.getSeconds());
-				this.currentTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-			},
-
-			// 加载小区列表
-			async loadCommunityList() {
 				this.loading = true;
 				try {
-					// 调用API获取小区列表
-					// const res = await this.$api.getCommunityList();
-					// if (res.code === 1) {
-					// 	this.communityList = res.data || [];
-					// 	// 根据小区ID在列表中找到对应的索引并回显数据
-					// 	const index = this.communityList.findIndex(item => item.id === this.villageId)
-					// 	if (index !== -1) {
-					// 		this.communityIndex = index
-					// 		const community = this.communityList[index]
-					// 		this.form.communityId = community.id
-					// 		this.form.communityName = community.name
-					// 	}
-					// }
+					// 通过小区ID查询小区信息
+					const res = await this.$api.getVillageInfo({
+						vid: this.villageId
+					});
+					this.formData.communityId = this.villageId
+					this.formData.communityName = res.data.villagename || '未知'
+					// 加载楼栋数据
+					this.loadBuildingData()
 				} catch (error) {
-					console.error('加载小区列表失败:', error);
 					uni.showToast({
-						title: '加载小区列表失败',
+						title: '未获取到小区信息',
 						icon: 'none'
 					});
 				} finally {
 					this.loading = false;
 				}
 			},
-
-			// 小区选择变化
-			onCommunityChange(e) {
-				const index = e.detail.value; // 获取选中的索引
-				const community = this.communityList[index];
-				if (community) {
-					this.communityIndex = index
-					this.form.communityId = community.id;
-					this.form.communityName = community.name;
-					// 清除房间数据
-					this.form.roomId = '';
-					this.form.roomNumber = '';
-					this.roomList = [];
-					// 加载该小区的房号列表
-					this.loadRoomList(community.id);
+			// 加载楼栋数据
+			loadBuildingData() {
+				const data = {
+					type: 2, // type是查询类型：1小区  2楼栋  3单元  4房号
+					// 查询楼栋，id传小区id
+					id: this.formData.communityId,
+					village_id: this.formData.communityId, // 小区id
+					login_token: this.$store.state.login_token // token
+				};
+				this.$api.getResource(data, res => {
+					if (res.code === 1) {
+						const list = res.data || []
+						this.buildingList = list.map((item) => {
+							return {
+								...item,
+								name: item.block
+							}
+						})
+					}
+				});
+			},
+			// 楼栋选择变化
+			buildingChange(e) {
+				const index = e.detail.value;
+				const building = this.buildingList[index];
+				// 清除单元数据
+				this.formData.unitId = '';
+				this.formData.unitName = '';
+				this.unitIndex = -1;
+				this.unitList = [];
+				// 强出房号数据
+				this.formData.roomId = '';
+				this.formData.roomName = '';
+				this.roomIndex = -1;
+				this.roomList = [];
+				if (building) {
+					this.formData.buildingId = building.id;
+					this.formData.buildingName = building.name;
+					// 加载该楼栋下的单元数据
+					this.loadUnitData(this.formData.buildingId)
 				}
 			},
-
-			// 加载房号列表
-			async loadRoomList(communityId) {
-				try {
-					// 这里根据小区ID获取房号列表
-					// const res = await this.$api.getRoomList({
-					// 	communityId
-					// });
-					// if (res.code === 1) {
-					// 	this.roomList = res.data || [];
-					// }
-				} catch (error) {
-					console.error('加载房号列表失败:', error);
+			// 查询单元数据
+			loadUnitData(buildingId) {
+				const params = {
+					type: 3, // type是查询类型：1小区  2楼栋  3单元  4房号
+					// 查询单元数据，id传楼栋id
+					id: buildingId,
+					village_id: this.formData.communityId, // 小区id
+					login_token: this.$store.state.login_token // token
+				};
+				this.$api.getResource(params, res => {
+					if (res.code === 1) {
+						const list = res.data || []
+						this.unitList = list.map((item) => {
+							return {
+								...item,
+								name: item.unit
+							}
+						})
+					}
+				})
+			},
+			// 单元选择变化
+			unitChange(e) {
+				const index = e.detail.value;
+				const unit = this.unitList[index];
+				// 强出房号数据
+				this.formData.roomId = '';
+				this.formData.roomName = '';
+				this.roomIndex = -1;
+				this.roomList = [];
+				if (unit) {
+					this.formData.unitId = unit.id;
+					this.formData.unitName = unit.name;
+					// 加载该单元下的房号数据
+					this.loadRoomData(this.formData.unitId)
 				}
 			},
-
+			// 加载房号数据
+			loadRoomData(unitId) {
+				const params = {
+					type: 4, // type是查询类型：1小区  2楼栋  3单元  4房号
+					// 查询房号数据，id传单元id
+					id: unitId,
+					village_id: this.formData.communityId, // 小区id
+					login_token: this.$store.state.login_token // token
+				};
+				this.$api.getResource(params, res => {
+					if (res.code === 1) {
+						const list = res.data || []
+						this.roomList = list.map((item) => {
+							return {
+								...item,
+								name: item.roomnum
+							}
+						})
+					}
+				})
+			},
 			// 房号选择变化
-			onRoomChange(e) {
-				const index = e.detail.value; // 获取选中的索引
+			roomChange(e) {
+				const index = e.detail.value;
 				const room = this.roomList[index];
 				if (room) {
-					this.roomIndex = index;
-					this.form.roomId = room.id;
-					this.form.roomNumber = room.roomNumber;
+					this.formData.roomId = room.id;
+					this.formData.roomName = room.name;
 				}
 			},
+
 			// 身份证验证
 			validateIdCard() {
-				const idCard = this.form.idCard.trim();
+				const idCard = this.formData.idCard.trim();
 				if (!idCard) {
 					this.idCardError = '请输入身份证号码';
 					return;
@@ -394,10 +453,9 @@
 				}
 				this.idCardError = '';
 			},
-
 			// 手机号验证
 			validatePhone() {
-				const phone = this.form.phone.trim();
+				const phone = this.formData.phone.trim();
 				if (!phone) {
 					this.phoneError = '请输入手机号码';
 					return;
@@ -409,10 +467,9 @@
 				}
 				this.phoneError = '';
 			},
-
 			// 业主手机验证
 			validateOwnerPhone() {
-				const phone = this.form.ownerPhone.trim();
+				const phone = this.formData.ownerPhone.trim();
 				if (!phone) {
 					this.ownerPhoneError = '请输入业主手机号';
 					return;
@@ -423,6 +480,37 @@
 					return;
 				}
 				this.ownerPhoneError = '';
+			},
+			// 检查历史记录
+			checkHistory() {
+				// 从本地存储获取访客历史记录
+				const history = uni.getStorageSync('visitorHistory');
+				// 无历史记录或记录无效
+				if (!history || !history.idCard) {
+					return false;
+				}
+
+				// 有历史记录，自动填充访客信息
+				this.formData.visitorName = history.visitorName || '';
+				this.formData.idCard = history.idCard || '';
+				this.formData.phone = history.phone || '';
+				this.setCurrTime();
+				this.hasHistory = true;
+
+				return true;
+			},
+			// 设置当前时间
+			setCurrTime() {
+				const now = new Date();
+				// 补零函数
+				const pad = (num) => num.toString().padStart(2, '0');
+				const year = now.getFullYear();
+				const month = pad(now.getMonth() + 1);
+				const day = pad(now.getDate());
+				const hours = pad(now.getHours());
+				const minutes = pad(now.getMinutes());
+				const seconds = pad(now.getSeconds());
+				this.currentTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 			},
 
 			// 提交登记
@@ -444,28 +532,27 @@
 					// 构建提交数据
 					const submitData = {
 						visitorType: this.visitorType,
-						...this.form,
+						...this.formData,
 						timestamp: Date.now()
 					};
 
 					// 调用提交API
-					const res = await this.$api.submitVisitorRegister(submitData);
+					// const res = await this.$api.submitVisitorRegister(submitData);
 
-					if (res.code === 1) {
-						uni.showToast({
-							title: '登记成功',
-							icon: 'success'
-						});
-						// 保存访客信息到本地历史记录
-						this.saveVisitorHistory();
-					} else {
-						uni.showToast({
-							title: res.msg || '提交失败',
-							icon: 'none'
-						});
-					}
+					// if (res.code === 1) {
+					// 	uni.showToast({
+					// 		title: '登记成功',
+					// 		icon: 'success'
+					// 	});
+					// 	// 保存访客信息到本地历史记录
+					// 	this.saveVisitorHistory();
+					// } else {
+					// 	uni.showToast({
+					// 		title: res.msg || '提交失败',
+					// 		icon: 'none'
+					// 	});
+					// }
 				} catch (error) {
-					console.error('提交失败:', error);
 					uni.showToast({
 						title: '网络异常，请重试',
 						icon: 'none'
@@ -478,11 +565,11 @@
 			// 保存访客历史记录
 			saveVisitorHistory() {
 				const history = {
-					visitorName: this.form.visitorName,
-					idCard: this.form.idCard,
-					phone: this.form.phone,
-					communityId: this.form.communityId,
-					communityName: this.form.communityName,
+					visitorName: this.formData.visitorName,
+					idCard: this.formData.idCard,
+					phone: this.formData.phone,
+					communityId: this.formData.communityId,
+					communityName: this.formData.communityName,
 					lastVisitTime: Date.now()
 				};
 				uni.setStorageSync('visitorHistory', history);
@@ -502,9 +589,10 @@
 	.visitor-type-card {
 		background-color: #fff;
 		color: #333;
-		padding: 30upx 60upx;
+		padding: 30upx 60upx 20upx;
 		display: flex;
 		box-sizing: border-box;
+		align-items: center;
 
 		.type-label {
 			font-size: 28upx;
